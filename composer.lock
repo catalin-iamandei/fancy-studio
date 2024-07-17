@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fe76a269f91f88d372d2a3eec63a1fc0",
+    "content-hash": "6776df6a628b7884f14b61228f6e9e26",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -2350,6 +2350,149 @@
                 }
             ],
             "time": "2023-12-03T19:50:20+00:00"
+        },
+        {
+            "name": "husam-tariq/filament-timepicker",
+            "version": "v3.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/husam-tariq/filament-timepicker.git",
+                "reference": "7922d60a55b0414ce954c23ec93eacdfc03face4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/husam-tariq/filament-timepicker/zipball/7922d60a55b0414ce954c23ec93eacdfc03face4",
+                "reference": "7922d60a55b0414ce954c23ec93eacdfc03face4",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^3.0.5",
+                "php": "^8.1",
+                "spatie/laravel-package-tools": "^1.15.0"
+            },
+            "require-dev": {
+                "nunomaduro/collision": "^7.9",
+                "orchestra/testbench": "^8.0",
+                "pestphp/pest": "^2.0",
+                "pestphp/pest-plugin-arch": "^2.0",
+                "pestphp/pest-plugin-laravel": "^2.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "HusamTariq\\FilamentTimePicker\\FilamentTimePickerServiceProvider"
+                    ],
+                    "aliases": {
+                        "FilamentTimePicker": "HusamTariq\\FilamentTimePicker\\Facades\\FilamentTimePicker"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "HusamTariq\\FilamentTimePicker\\": "src/",
+                    "HusamTariq\\FilamentTimePicker\\Database\\Factories\\": "database/factories/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Hussam Tariq",
+                    "email": "hu22am1@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Filament 3.x Time Picker",
+            "homepage": "https://github.com/husam-tariq/filament-timepicker",
+            "keywords": [
+                "filament",
+                "filament-timepicker",
+                "husam-tariq",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/husam-tariq/filament-timepicker/issues",
+                "source": "https://github.com/husam-tariq/filament-timepicker"
+            },
+            "time": "2024-05-23T20:31:39+00:00"
+        },
+        {
+            "name": "icetalker/filament-stepper",
+            "version": "v1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/icetalker/filament-stepper.git",
+                "reference": "ef48e6c90e5126bed2a55d5e5ce61fb41113c44f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/icetalker/filament-stepper/zipball/ef48e6c90e5126bed2a55d5e5ce61fb41113c44f",
+                "reference": "ef48e6c90e5126bed2a55d5e5ce61fb41113c44f",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^2.0|^3.0",
+                "illuminate/contracts": "^8.6|^9.0|^10.0|^11.0",
+                "php": "^8.0",
+                "spatie/laravel-package-tools": "^1.9.2"
+            },
+            "require-dev": {
+                "nunomaduro/collision": "^6.0|^8.0",
+                "orchestra/testbench": "^7.0|^9.0",
+                "pestphp/pest": "^1.21|^2.34",
+                "pestphp/pest-plugin-laravel": "^1.1|^2.3",
+                "phpunit/phpunit": "^9.5|^10.5",
+                "spatie/laravel-ray": "^1.26"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Icetalker\\FilamentStepper\\FilamentStepperServiceProvider"
+                    ],
+                    "aliases": {
+                        "FilamentStepper": "Icetalker\\FilamentStepper\\Facades\\FilamentStepper"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Icetalker\\FilamentStepper\\": "src",
+                    "Icetalker\\FilamentStepper\\Database\\Factories\\": "database/factories"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Martin Hwang",
+                    "email": "martin.hwang@outlook.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Filament Form Component for Number Input Field ",
+            "homepage": "https://github.com/icetalker/filament-stepper",
+            "keywords": [
+                "filament-stepper",
+                "icetalker",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/icetalker/filament-stepper/issues",
+                "source": "https://github.com/icetalker/filament-stepper/tree/v1.2.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/icetalker",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-04-03T21:39:30+00:00"
         },
         {
             "name": "kirschbaum-development/eloquent-power-joins",
@@ -8313,6 +8456,60 @@
                 }
             ],
             "time": "2022-03-08T17:03:00+00:00"
+        },
+        {
+            "name": "webbingbrasil/filament-copyactions",
+            "version": "3.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/webbingbrasil/filament-copyactions.git",
+                "reference": "6a7bd63c1ce69632147f3ecf2c193f3465d8de43"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/webbingbrasil/filament-copyactions/zipball/6a7bd63c1ce69632147f3ecf2c193f3465d8de43",
+                "reference": "6a7bd63c1ce69632147f3ecf2c193f3465d8de43",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^3.0",
+                "php": "^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Webbingbrasil\\FilamentCopyActions\\FilamentCopyActionsProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Webbingbrasil\\FilamentCopyActions\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Danilo Andrade",
+                    "email": "danilo@webbingbrasil.com.br",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A easy-to-use copy actions for Filament Admin.",
+            "homepage": "https://github.com/webbingbrasil/filament-copyactions",
+            "keywords": [
+                "filament",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/webbingbrasil/filament-copyactions/issues",
+                "source": "https://github.com/webbingbrasil/filament-copyactions/tree/3.0.1"
+            },
+            "time": "2024-04-03T12:14:21+00:00"
         },
         {
             "name": "webmozart/assert",

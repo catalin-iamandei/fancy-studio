@@ -12,7 +12,7 @@ class TypologyPolicy
      */
     public function viewAny(User $user): bool
     {
-        return true;
+        return $user->can('view_typology');
     }
 
     /**
@@ -20,7 +20,7 @@ class TypologyPolicy
      */
     public function view(User $user, Typology $model): bool
     {
-        return true;
+        return $user->can('view_typology');
     }
 
     /**
@@ -28,7 +28,7 @@ class TypologyPolicy
      */
     public function create(User $user): bool
     {
-        return true;
+        return $user->can('create_typology');
     }
 
     /**
@@ -36,7 +36,7 @@ class TypologyPolicy
      */
     public function update(User $user, Typology $model): bool
     {
-        return true;
+        return $user->can('update_typology');
     }
 
     /**
@@ -44,7 +44,7 @@ class TypologyPolicy
      */
     public function delete(User $user, Typology $model): bool
     {
-        return true;
+        return $user->can('delete_typology');
     }
 
     /**
@@ -52,7 +52,7 @@ class TypologyPolicy
      */
     public function restore(User $user, Typology $model): bool
     {
-        return true;
+        return $user->can('delete_typology');
     }
 
     /**
@@ -60,6 +60,6 @@ class TypologyPolicy
      */
     public function forceDelete(User $user, Typology $model): bool
     {
-        return true;
+        return $user->can('delete_typology');
     }
 }

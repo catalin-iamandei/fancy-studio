@@ -12,7 +12,7 @@ class EmployeePolicy
      */
     public function viewAny(User $user): bool
     {
-        return true;
+        return $user->can('view_employee');
     }
 
     /**
@@ -20,7 +20,7 @@ class EmployeePolicy
      */
     public function view(User $user, Employee $model): bool
     {
-        return true;
+        return $user->can('view_employee');
     }
 
     /**
@@ -28,7 +28,7 @@ class EmployeePolicy
      */
     public function create(User $user): bool
     {
-        return true;
+        return $user->can('create_employee');
     }
 
     /**
@@ -36,7 +36,7 @@ class EmployeePolicy
      */
     public function update(User $user, Employee $model): bool
     {
-        return true;
+        return $user->can('update_employee');
     }
 
     /**
@@ -44,7 +44,7 @@ class EmployeePolicy
      */
     public function delete(User $user, Employee $model): bool
     {
-        return true;
+        return $user->can('delete_employee');
     }
 
     /**
@@ -52,7 +52,7 @@ class EmployeePolicy
      */
     public function restore(User $user, Employee $model): bool
     {
-        return true;
+        return $user->can('delete_employee');
     }
 
     /**
@@ -60,6 +60,6 @@ class EmployeePolicy
      */
     public function forceDelete(User $user, Employee $model): bool
     {
-        return true;
+        return $user->can('delete_employee');
     }
 }
