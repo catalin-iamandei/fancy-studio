@@ -16,6 +16,7 @@ use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
+use Icetalker\FilamentStepper\Forms\Components\Stepper;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Hash;
 
@@ -32,6 +33,7 @@ class UserResource extends Resource
             ->schema([
                 Forms\Components\SpatieMediaLibraryFileUpload::make('avatar')
                     ->label('Avatar')
+                    ->columnSpan(12)
                     ->conversion('thumb')
                     ->responsiveImages()
                     ->avatar()
@@ -39,13 +41,16 @@ class UserResource extends Resource
                     ->columnSpanFull(),
                 Forms\Components\TextInput::make('name')
                     ->label('Name')
+                    ->columnSpan(6)
                     ->required(),
                 Forms\Components\TextInput::make('email')
                     ->email()
+                    ->columnSpan(6)
                     ->required()
                     ->unique(ignoreRecord: true),
                 Forms\Components\TextInput::make('password')
                     ->password()
+                    ->columnSpan(6)
                     ->dehydrateStateUsing(fn ($state) => Hash::make($state))
                     ->dehydrated(fn ($state) => filled($state))
                     ->required(fn (string $context): bool => $context === 'create')
@@ -54,8 +59,22 @@ class UserResource extends Resource
 
                 Forms\Components\Select::make('roles')
                     ->relationship('roles', 'name')
+                    ->columnSpan(6)
                     ->label('Role'),
-            ]);
+
+                Forms\Components\Toggle::make('is_writer')
+                    ->reactive()
+                    ->columnSpan(6),
+
+                Stepper::make('commission')
+                    ->hidden(
+                        fn ($get): bool => !$get('is_writer')
+                    )
+                    ->label('Commission (%)')
+                    ->minValue(0)
+                    ->maxValue(100)
+                    ->columnSpan(6),
+            ])->columns(12);
     }
 
     public static function table(Table $table): Table
@@ -75,9 +94,9 @@ class UserResource extends Resource
                 TextColumn::make('roles.name')
                     ->label('Role')
                     ->badge(),
-                IconColumn::make('email_verified_at')
+                IconColumn::make('is_writer')
                     ->boolean()
-                    ->label('Email verified at')
+                    ->label('Is Writer')
                     ->trueIcon('heroicon-o-check-badge')
                     ->falseIcon('heroicon-o-x-mark'),
                 TextColumn::make('created_at')
@@ -85,9 +104,9 @@ class UserResource extends Resource
                     ->since(),
             ])
             ->filters([
-                Filter::make('email_verified_at')
-                    ->toggle()
-                    ->label('Email verified'),
+//                Filter::make('is_writer')
+//                    ->toggle()
+//                    ->label('Writers'),
                 Filter::make('created_at')
                     ->form([
                         Forms\Components\DatePicker::make('created_from'),

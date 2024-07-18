@@ -11,12 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('payments', function (Blueprint $table) {
+        Schema::create('locations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('employee_id')->constrained()->nullOnDelete();
-            $table->foreignId('site_id')->constrained()->nullOnDelete();
-            $table->date('date')->nullable();
-            $table->decimal('amount', 10, 2)->nullable();
+            $table->string('name');
             $table->timestamps();
         });
     }
@@ -26,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('payments');
+        Schema::dropIfExists('locations');
     }
 };

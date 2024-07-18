@@ -3,20 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Employee extends Model
 {
-    use HasFactory;
-
     protected $guarded = [];
 
     public function writer()
     {
-        return $this->belongsTo(User::class, 'writer_id')->whereHas('Roles', function($query) {
-            $query->where('roles.id', 2);
-        });
+        return $this->belongsTo(User::class, 'writer_id')->where('is_writer', true);
     }
 
     public function typology()
@@ -24,9 +19,19 @@ class Employee extends Model
         return $this->belongsTo(Typology::class);
     }
 
+    public function location()
+    {
+        return $this->belongsTo(Location::class);
+    }
+
     public function sites()
     {
         return $this->belongsToMany(Site::class)->using(EmployeeSite::class);
+    }
+
+    public function timeTracking()
+    {
+        return $this->belongsTo(TimeTracking::class);
     }
 
     public function employeeSite(): HasMany

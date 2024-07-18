@@ -19,6 +19,9 @@ return new class extends Migration
                 ->on('users')
                 ->nullOnDelete()
                 ->cascadeOnUpdate();
+            $table->date('date_start')->after('typology_id');
+            $table->string('intern_mail')->after('tips_reaction_proportional');
+            $table->string('intern_mail_password')->after('intern_mail');
         });
     }
 
@@ -29,7 +32,7 @@ return new class extends Migration
     {
         Schema::table('employees', function (Blueprint $table) {
             $table->dropForeign(['writer_id']);
-            $table->dropColumn('writer_id');
+            $table->dropColumn(['writer_id', 'date_start', 'intern_mail', 'intern_mail_password']);
         });
     }
 };

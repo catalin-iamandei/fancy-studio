@@ -20,6 +20,7 @@ use Filament\Tables\Filters\SelectFilter;
 use App\Filament\Resources\EmployeeResource\Pages;
 use HusamTariq\FilamentTimePicker\Forms\Components\TimePickerField;
 use Icetalker\FilamentStepper\Forms\Components\Stepper;
+use Illuminate\Database\Eloquent\Builder;
 use Webbingbrasil\FilamentCopyActions\Forms\Actions\CopyAction;
 
 class EmployeeResource extends Resource
@@ -29,6 +30,14 @@ class EmployeeResource extends Resource
     protected static ?string $recordTitleAttribute = 'name';
 
     public static ?string $label = 'Model';
+
+    public static function getEloquentQuery(): Builder
+    {
+        if(!auth()->user()->can('view_employee') && auth()->user()->is_writer) {
+            return parent::getEloquentQuery()->where('writer_id', auth()->user()->id);
+        }
+        return parent::getEloquentQuery();
+    }
 
     public static function form(Form $form): Form
     {
@@ -42,21 +51,30 @@ class EmployeeResource extends Resource
                             TextInput::make('name')
                                 ->rules(['max:255', 'string'])
                                 ->required()
-                                ->columnSpan(4)
+                                ->columnSpan(6)
                                 ->placeholder('Name'),
 
                             TextInput::make('phone')
                                 ->rules(['max:255', 'string'])
                                 ->nullable()
-                                ->columnSpan(4)
+                                ->columnSpan(6)
                                 ->placeholder('Phone'),
+
                             Select::make('writer_id')
                                 ->rules(['exists:users,id'])
                                 ->required()
                                 ->relationship('writer', 'name')
                                 ->searchable()
                                 ->preload()
-                                ->columnSpan(4),
+                                ->columnSpan(6),
+
+                            Select::make('location_id')
+                                ->rules(['exists:location,id'])
+                                ->required()
+                                ->relationship('location', 'name')
+                                ->searchable()
+                                ->preload()
+                                ->columnSpan(6),
 
 //                            Forms\Components\TimePicker::make('check_in')
 //                                ->seconds(false)
@@ -174,7 +192,8 @@ class EmployeeResource extends Resource
                                 ])
                                 ->columns(12)
                                 ->columnSpan(12)
-                        ])
+                        ]),
+
                 ]),
         ]);
     }
@@ -183,7 +202,11 @@ class EmployeeResource extends Resource
     {
         return $table
             ->poll('60s')
+            ->query(self::getEloquentQuery())
             ->columns([
+                Tables\Columns\TextColumn::make('writer.name')
+                    ->toggleable()
+                    ->limit(50),
                 Tables\Columns\TextColumn::make('principal_site.name')
                     ->toggleable()
                     ->limit(50),
@@ -247,12 +270,14 @@ class EmployeeResource extends Resource
                     ->relationship('principal_site', 'name')
                     ->indicator('Site')
                     ->multiple()
+                    ->preload()
                     ->label('Site'),
 
                 SelectFilter::make('typology_id')
                     ->relationship('typology', 'name')
                     ->indicator('Typology')
                     ->multiple()
+                    ->preload()
                     ->label('Typology'),
             ])
             ->actions([

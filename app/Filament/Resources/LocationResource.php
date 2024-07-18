@@ -2,23 +2,22 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\SiteResource\Pages;
-use App\Filament\Resources\SiteResource\RelationManagers;
-use App\Models\Site;
+use App\Filament\Resources\LocationResource\Pages;
+use App\Filament\Resources\LocationResource\RelationManagers;
+use App\Models\Location;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class SiteResource extends Resource
+class LocationResource extends Resource
 {
-    protected static ?string $model = Site::class;
-    protected static ?string $navigationIcon = 'heroicon-o-globe-alt';
-    protected static ?string $recordTitleAttribute = 'name';
+    protected static ?string $model = Location::class;
+
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
@@ -26,12 +25,8 @@ class SiteResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required()
-                    ->columnSpan(6)
                     ->maxLength(255),
-                Forms\Components\Toggle::make('payment_to_employee')
-                    ->label('Payment to employee')
-                    ->columnSpan(6),
-            ])->columns(12);
+            ]);
     }
 
     public static function table(Table $table): Table
@@ -40,10 +35,6 @@ class SiteResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                IconColumn::make('payment_to_employee')
-                    ->boolean()
-                    ->trueIcon('heroicon-o-check')->trueColor('black')
-                    ->falseIcon('heroicon-o-x-mark')->falseColor('black'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -76,9 +67,9 @@ class SiteResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListSites::route('/'),
-            'create' => Pages\CreateSite::route('/create'),
-            'edit' => Pages\EditSite::route('/{record}/edit'),
+            'index' => Pages\ListLocations::route('/'),
+            'create' => Pages\CreateLocation::route('/create'),
+            'edit' => Pages\EditLocation::route('/{record}/edit'),
         ];
     }
 }

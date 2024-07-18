@@ -23,6 +23,8 @@ class User extends Authenticatable implements FilamentUser, HasMedia, HasAvatar
      * @var array<int, string>
      */
     protected $fillable = [
+        'is_writer',
+        'commission',
         'name',
         'email',
         'password',
@@ -46,9 +48,17 @@ class User extends Authenticatable implements FilamentUser, HasMedia, HasAvatar
     protected function casts(): array
     {
         return [
+            'is_writer' => 'boolean',
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    protected static function booted(): void
+    {
+        static::creating(function (User $user) {
+            $user->email_verified_at = now();
+        });
     }
 
     public function registerMediaCollections(): void

@@ -16,7 +16,7 @@ class Site extends Model
         return $this->belongsToMany(Employee::class)->using(EmployeeSite::class);
     }
 
-    public function principal_employees()
+    public function principal_employees(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Employee::class);
     }

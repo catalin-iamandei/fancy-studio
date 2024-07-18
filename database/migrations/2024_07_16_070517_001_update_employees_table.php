@@ -16,7 +16,7 @@ return new class extends Migration {
             $table
                 ->time('check_in')
                 ->nullable()
-                ->after('site_id');
+                ->after('principal_site_id');
             $table
                 ->longText('attitude')
                 ->nullable()

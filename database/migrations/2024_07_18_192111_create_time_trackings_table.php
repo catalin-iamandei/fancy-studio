@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('payments', function (Blueprint $table) {
+        Schema::create('time_trackings', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('employee_id')->constrained()->nullOnDelete();
-            $table->foreignId('site_id')->constrained()->nullOnDelete();
-            $table->date('date')->nullable();
-            $table->decimal('amount', 10, 2)->nullable();
+            $table->foreignId('employee_id')->constrained()->cascadeOnDelete();
+            $table->timestamp('check_in')->nullable();
+            $table->timestamp('check_out')->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('payments');
+        Schema::dropIfExists('time_trackings');
     }
 };
