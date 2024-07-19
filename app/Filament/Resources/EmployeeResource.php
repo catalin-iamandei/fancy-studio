@@ -21,7 +21,6 @@ use App\Filament\Resources\EmployeeResource\Pages;
 use HusamTariq\FilamentTimePicker\Forms\Components\TimePickerField;
 use Icetalker\FilamentStepper\Forms\Components\Stepper;
 use Illuminate\Database\Eloquent\Builder;
-use Webbingbrasil\FilamentCopyActions\Forms\Actions\CopyAction;
 
 class EmployeeResource extends Resource
 {
@@ -51,14 +50,18 @@ class EmployeeResource extends Resource
                             TextInput::make('name')
                                 ->rules(['max:255', 'string'])
                                 ->required()
-                                ->columnSpan(6)
+                                ->columnSpan(4)
                                 ->placeholder('Name'),
 
                             TextInput::make('phone')
                                 ->rules(['max:255', 'string'])
                                 ->nullable()
-                                ->columnSpan(6)
+                                ->columnSpan(4)
                                 ->placeholder('Phone'),
+
+                            Forms\Components\DatePicker::make('date_start')
+                                ->native(false)
+                                ->columnSpan(4),
 
                             Select::make('writer_id')
                                 ->rules(['exists:users,id'])
@@ -69,7 +72,7 @@ class EmployeeResource extends Resource
                                 ->columnSpan(6),
 
                             Select::make('location_id')
-                                ->rules(['exists:location,id'])
+                                ->rules(['exists:locations,id'])
                                 ->required()
                                 ->relationship('location', 'name')
                                 ->searchable()
@@ -193,16 +196,32 @@ class EmployeeResource extends Resource
                                 ->columns(12)
                                 ->columnSpan(12)
                         ]),
+                    Forms\Components\Tabs\Tab::make('Confidential')
+                        ->columns(12)
+                        ->visible(fn() => auth()->user()->hasRole('super_admin'))
+                        ->schema([
+                            Forms\Components\TextInput::make('intern_mail')
+//                                        ->prefixAction(CopyAction::make())
+                                ->required()
+                                ->columnSpan(6),
 
+                            Forms\Components\TextInput::make('intern_mail_password')
+                                ->required()
+                                ->columnSpan(6),
+                        ])
                 ]),
         ]);
     }
 
-    public static function table(Table $table): Table
+    public static function table(Table $table, $fromRelationManager = false): Table
     {
         return $table
             ->poll('60s')
-            ->query(self::getEloquentQuery())
+            ->modifyQueryUsing(function (Builder $query) use ($fromRelationManager) {
+                if (!$fromRelationManager) {
+                    return self::getEloquentQuery();
+                }
+            })
             ->columns([
                 Tables\Columns\TextColumn::make('writer.name')
                     ->toggleable()
@@ -285,7 +304,7 @@ class EmployeeResource extends Resource
                 EditAction::make(),
                 DeleteAction::make(),
             ])
-            ->headerActions([CreateAction::make()]);
+            ->headerActions(!$fromRelationManager ? [CreateAction::make()] : []);
     }
 
     public static function getPages(): array

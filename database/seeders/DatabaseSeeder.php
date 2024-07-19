@@ -17,12 +17,12 @@ class DatabaseSeeder extends Seeder
     {
         Artisan::call('shield:generate --all --ignore-existing-policies');
 
-        $search = '_shield::';
-        $permissions = Permission::where('name', 'LIKE', '%'.$search.'%')->get();
-        foreach ($permissions as $permission) {
-            $permission->name = str_replace($search, '_', $permission->name);
-            $permission->save();
-        }
+//        $search = '_shield::';
+//        $permissions = Permission::where('name', 'LIKE', '%'.$search.'%')->get();
+//        foreach ($permissions as $permission) {
+//            $permission->name = str_replace($search, '_', $permission->name);
+//            $permission->save();
+//        }
 
         $super_admin_user = User::factory()->create([
             'name' => 'Catalin Iamandei',

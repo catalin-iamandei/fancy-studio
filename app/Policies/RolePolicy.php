@@ -4,18 +4,16 @@ namespace App\Policies;
 
 use App\Models\User;
 use Spatie\Permission\Models\Role;
-use Illuminate\Auth\Access\HandlesAuthorization;
 
 class RolePolicy
 {
-    use HandlesAuthorization;
 
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_role');
+        return $user->can('view_shield::role');
     }
 
     /**
@@ -23,7 +21,7 @@ class RolePolicy
      */
     public function view(User $user, Role $role): bool
     {
-        return $user->can('view_role');
+        return $user->can('view_shield::role');
     }
 
     /**
@@ -31,7 +29,7 @@ class RolePolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_role');
+        return $user->can('create_shield::role');
     }
 
     /**
@@ -39,7 +37,7 @@ class RolePolicy
      */
     public function update(User $user, Role $role): bool
     {
-        return $user->can('update_role');
+        return $user->can('update_shield::role');
     }
 
     /**
@@ -47,7 +45,7 @@ class RolePolicy
      */
     public function delete(User $user, Role $role): bool
     {
-        return $user->can('delete_role');
+        return $user->can('delete_shield::role');
     }
 
     /**
@@ -55,7 +53,7 @@ class RolePolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_role');
+        return $user->can('delete_shield::role');
     }
 
     /**
@@ -63,7 +61,7 @@ class RolePolicy
      */
     public function forceDelete(User $user, Role $role): bool
     {
-        return $user->can('delete_role');
+        return $user->can('delete_shield::role');
     }
 
     /**
@@ -71,7 +69,7 @@ class RolePolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('delete_role');
+        return $user->can('delete_shield::role');
     }
 
     /**
@@ -79,7 +77,7 @@ class RolePolicy
      */
     public function restore(User $user, Role $role): bool
     {
-        return $user->can('delete_role');
+        return $user->can('delete_shield::role');
     }
 
     /**
@@ -87,7 +85,7 @@ class RolePolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('delete_role');
+        return $user->can('delete_shield::role');
     }
 
     /**
@@ -95,7 +93,7 @@ class RolePolicy
      */
     public function replicate(User $user, Role $role): bool
     {
-        return $user->can('delete_role');
+        return $user->can('delete_shield::role');
     }
 
     /**
@@ -103,6 +101,6 @@ class RolePolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('update_role');
+        return $user->can('update_shield::role');
     }
 }
