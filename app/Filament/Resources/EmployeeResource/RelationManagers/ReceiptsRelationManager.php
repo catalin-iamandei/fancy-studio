@@ -56,8 +56,9 @@ class ReceiptsRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make()->disabled(fn() => !$this->ownerRecord->finishedWorkedToday())
-                    ->label(fn() => !$this->ownerRecord->finishedWorkedToday() ? 'Add timesheet first!' : 'Add Receipt'),
+                Tables\Actions\CreateAction::make()
+//                    ->disabled(fn() => !$this->ownerRecord->finishedWorkedToday())
+//                    ->label(fn() => !$this->ownerRecord->finishedWorkedToday() ? 'Add timesheet first!' : 'Add Receipt'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

@@ -21,6 +21,13 @@ class Receipt extends Model
         ];
     }
 
+    protected static function booted(): void
+    {
+        static::creating(function (Receipt $receipt) {
+            $receipt->writer_id = auth()->user()->id;
+        });
+    }
+
     public function writer()
     {
         return $this->belongsTo(User::class, 'writer_id');
