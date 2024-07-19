@@ -29,9 +29,14 @@ class Employee extends Model
         return $this->belongsToMany(Site::class)->using(EmployeeSite::class);
     }
 
-    public function timeTracking()
+    public function timeTracking(): HasMany
     {
-        return $this->belongsTo(TimeTracking::class);
+        return $this->hasMany(TimeTracking::class);
+    }
+
+    public function receipts(): HasMany
+    {
+        return $this->hasMany(Receipt::class);
     }
 
     public function employeeSite(): HasMany
@@ -42,5 +47,42 @@ class Employee extends Model
     public function principal_site()
     {
         return $this->belongsTo(Site::class, 'principal_site_id', 'id');
+    }
+
+    public function checkIn($checkIn): void
+    {
+        $this->timeTracking()->create([
+            'employee_id' => $this->id,
+            'check_in' => date('Y-m-d') . ' ' . $checkIn
+        ]);
+    }
+
+    public function checkOut($checkOut): void
+    {
+        $timeTracking =  $this->timeTracking()->where([
+            'employee_id' => $this->id,
+            'check_in' => $this->timeTracking->last()->check_in,
+        ])->firstOrFail();
+        $timeTracking->check_out = date('Y-m-d') . ' ' . $checkOut;
+        $timeTracking->save();
+    }
+
+    public function isOnline(): bool
+    {
+        return $this->timeTracking()
+            ->whereDate('check_in', today())
+            ->where(function ($query) {
+                $query->whereDate('check_out', '!=', today())
+                    ->orWhereNull('check_out');
+            })
+            ->exists();
+    }
+
+    public function finishedWorkedToday(): bool
+    {
+        return $this->timeTracking()
+            ->whereDate('check_in', today())
+            ->whereDate('check_out', today())
+            ->exists();
     }
 }

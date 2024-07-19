@@ -19,7 +19,7 @@ class SiteResource extends Resource
     protected static ?string $model = Site::class;
     protected static ?string $navigationIcon = 'heroicon-o-globe-alt';
     protected static ?string $recordTitleAttribute = 'name';
-
+    protected static ?string $navigationGroup = 'Settings';
     public static function form(Form $form): Form
     {
         return $form

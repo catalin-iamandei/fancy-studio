@@ -2,7 +2,10 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Resources\EmployeeResource\RelationManagers\ReceiptsRelationManager;
+use App\Filament\Resources\EmployeeResource\RelationManagers\TimeTrackingRelationManager;
 use App\Models\Site;
+use Filament\Actions\ActionGroup;
 use Filament\Forms;
 use Filament\Tables;
 use App\Models\Employee;
@@ -44,6 +47,14 @@ class EmployeeResource extends Resource
             Forms\Components\Tabs::make('Tabs')
                 ->columnSpanFull()
                 ->tabs([
+                    Forms\Components\Tabs\Tab::make('Receipts')
+                        ->schema([
+                            \Njxqlus\Filament\Components\Forms\RelationManager::make()->manager(ReceiptsRelationManager::class)->lazy(false)
+                        ]),
+                    Forms\Components\Tabs\Tab::make('Timesheet')
+                        ->schema([
+                            \Njxqlus\Filament\Components\Forms\RelationManager::make()->manager(TimeTrackingRelationManager::class)->lazy(false)
+                        ]),
                     Forms\Components\Tabs\Tab::make('About')
                         ->columns(12)
                         ->schema([
@@ -300,11 +311,80 @@ class EmployeeResource extends Resource
                     ->label('Typology'),
             ])
             ->actions([
-                ViewAction::make(),
-                EditAction::make(),
-                DeleteAction::make(),
+                Tables\Actions\Action::make('payments')
+                    ->label('Payments')
+                    ->form([
+                        Forms\Components\TimePicker::make('checkin')
+                            ->label('Check in time')
+                            ->default(now())
+                            ->native(false)
+                            ->required(),
+                    ])
+                    ->modalSubmitActionLabel('Check in')
+                    ->action(function (array $data, $record) {
+                        $record->checkIn($data['checkin']);
+                    })
+                    ->hidden(function (array $data, $record) {
+                        return $record->isOnline();
+                    })
+                    ->button()
+                    ->color('info')
+                    ->modalWidth('xl'),
+
+                Tables\Actions\Action::make('checkIn')
+                    ->label('Check In')
+                    ->form([
+                        Forms\Components\TimePicker::make('checkin')
+                            ->label('Check in time')
+                            ->default(now())
+                            ->native(false)
+                            ->required(),
+                    ])
+                    ->modalSubmitActionLabel('Check in')
+                    ->action(function (array $data, $record) {
+                        $record->checkIn($data['checkin']);
+                    })
+                    ->hidden(function (array $data, $record) {
+                        return $record->isOnline();
+                    })
+                    ->button()
+                    ->color('success')
+                    ->modalWidth('xl'),
+
+                Tables\Actions\Action::make('checkOut')
+                    ->label('Check Out')
+                    ->form([
+                        Forms\Components\TimePicker::make('checkout')
+                            ->label('Check out time')
+                            ->default(now())
+                            ->native(false)
+                            ->required(),
+                    ])
+                    ->modalSubmitActionLabel('Check out')
+                    ->action(function (array $data, $record) {
+                        $record->checkOut($data['checkout']);
+                    })
+                    ->hidden(function (array $data, $record) {
+                        return !$record->isOnline();
+                    })
+                    ->button()
+                    ->color('danger')
+                    ->modalWidth('xl'),
+
+                Tables\Actions\ActionGroup::make([
+                    ViewAction::make(),
+                    EditAction::make(),
+                    DeleteAction::make(),
+                ]),
             ])
             ->headerActions(!$fromRelationManager ? [CreateAction::make()] : []);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+//            TimeTrackingRelationManager::make()
+        ];
     }
 
     public static function getPages(): array

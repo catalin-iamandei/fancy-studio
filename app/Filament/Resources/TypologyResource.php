@@ -18,6 +18,7 @@ class TypologyResource extends Resource
     protected static ?string $model = Typology::class;
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $recordTitleAttribute = 'name';
+    protected static ?string $navigationGroup = 'Settings';
     public static function form(Form $form): Form
     {
         return $form
