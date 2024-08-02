@@ -1,0 +1,11 @@
+[
+    {
+        "name": "server-1",
+        "ip": "104.248.133.131",
+        "username": "deploybot",
+        "port": "22",
+        "beforeHooks": "",
+        "afterHooks": "php artisan deploy --force",
+        "path": "/var/www/laravel"
+    }
+]
