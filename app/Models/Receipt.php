@@ -36,4 +36,8 @@ class Receipt extends Model
     {
         return $this->belongsTo(Site::class);
     }
+    public function employee(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Employee::class);
+    }
 }

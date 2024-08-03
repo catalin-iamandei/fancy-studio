@@ -2,14 +2,11 @@
 
 namespace App\Filament\Resources\EmployeeResource\RelationManagers;
 
-use Filament\Forms;
-use Filament\Forms\Components\Select;
+use App\Filament\Resources\ReceiptResource;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ReceiptsRelationManager extends RelationManager
 {
@@ -19,42 +16,23 @@ class ReceiptsRelationManager extends RelationManager
     {
         return $form
             ->columns(12)
-            ->schema([
-                Forms\Components\DatePicker::make('date')
-                    ->required()
-                    ->default(today())
-                    ->maxDate(today())
-                    ->native(false)
-                    ->columnSpan(4),
-                Select::make('site_id')
-                    ->rules(['exists:sites,id'])
-                    ->required()
-                    ->relationship('site', 'name')
-                    ->searchable()
-                    ->preload()
-                    ->columnSpan(4)
-                    ->placeholder('Site'),
-                Forms\Components\TextInput::make('amount')
-                    ->prefix('$')
-//                    ->prefixIcon('heroicon-o-currency-dollar')
-                    ->columnSpan(4)
-                    ->numeric()
-                    ->required()
-            ]);
+            ->schema(
+                ReceiptResource::formData()
+            );
     }
 
     public function table(Table $table): Table
     {
         return $table
+            ->defaultSort('created_at', 'desc')
             ->recordTitleAttribute('name')
-            ->columns([
-                Tables\Columns\TextColumn::make('date')->date(),
-                Tables\Columns\TextColumn::make('site.name'),
-                Tables\Columns\TextColumn::make('amount'),
-            ])
-            ->filters([
-                //
-            ])
+            ->columns(
+                ReceiptResource::tableData()
+            )
+            ->filters(
+                ReceiptResource::filtersData(), layout: Tables\Enums\FiltersLayout::AboveContent
+            )
+            ->filtersFormColumns(12)
             ->headerActions([
                 Tables\Actions\CreateAction::make()
 //                    ->disabled(fn() => !$this->ownerRecord->finishedWorkedToday())
