@@ -197,12 +197,12 @@ class EmployeeResource extends Resource
                                         ->disableOptionsWhenSelectedInSiblingRepeaterItems()
                                         ->columnSpan(4),
                                     Forms\Components\TextInput::make('username')
-                                        ->prefixAction(CopyAction::make())
+                                        ->prefixAction(CopyAction::make()->copyable(fn ($record) => dd($record)))
                                         ->required()
                                         ->columnSpan(4),
 
                                     Forms\Components\TextInput::make('password')
-                                        ->prefixAction(CopyAction::make())
+                                        ->prefixAction(CopyAction::make()->copyable(fn ($record) => dd($record->password)))
                                         ->required()
                                         ->columnSpan(4),
                                 ])
