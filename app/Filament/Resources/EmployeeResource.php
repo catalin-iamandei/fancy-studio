@@ -51,11 +51,11 @@ class EmployeeResource extends Resource
                     Forms\Components\Tabs\Tab::make('Receipts')
                         ->schema([
                             \Njxqlus\Filament\Components\Forms\RelationManager::make()->manager(ReceiptsRelationManager::class)->lazy(false)
-                        ]),
+                        ])->hidden(fn ($record): bool => !$record?->receipts),
                     Forms\Components\Tabs\Tab::make('Timesheet')
                         ->schema([
                             \Njxqlus\Filament\Components\Forms\RelationManager::make()->manager(TimeTrackingRelationManager::class)->lazy(false)
-                        ]),
+                        ])->hidden(fn ($record): bool => !$record?->timeTracking),
                     Forms\Components\Tabs\Tab::make('About')
                         ->columns(12)
                         ->schema([
