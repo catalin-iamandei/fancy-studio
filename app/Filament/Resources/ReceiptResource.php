@@ -78,10 +78,16 @@ class ReceiptResource extends Resource
     {
         return [
             Tables\Columns\TextColumn::make('employee.name')
+                ->label('Model')
+                ->hidden($fromRelation),
+            Tables\Columns\TextColumn::make('employee.location.name')
+                ->hidden($fromRelation),
+            Tables\Columns\TextColumn::make('employee.writer.name')
                 ->hidden($fromRelation),
             Tables\Columns\TextColumn::make('date')->date(),
             Tables\Columns\TextColumn::make('site.name'),
             Tables\Columns\TextColumn::make('amount')
+                ->prefix('$')
                 ->summarize(Tables\Columns\Summarizers\Sum::make()
                     ->label('Total')
                     ->numeric()
@@ -122,6 +128,18 @@ class ReceiptResource extends Resource
     public static function filtersData($fromRelation = true)
     {
         return [
+            Tables\Filters\SelectFilter::make('location')
+                ->multiple()
+                ->preload()
+                ->hidden($fromRelation)
+                ->columnSpan(4)
+                ->relationship('employee.location', 'name'),
+            Tables\Filters\SelectFilter::make('writer')
+                ->multiple()
+                ->preload()
+                ->hidden($fromRelation)
+                ->columnSpan(4)
+                ->relationship('employee.writer', 'name'),
             Tables\Filters\SelectFilter::make('employee')
                 ->label('Model')
                 ->multiple()

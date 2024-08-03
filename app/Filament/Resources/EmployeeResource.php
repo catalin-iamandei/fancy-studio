@@ -237,65 +237,25 @@ class EmployeeResource extends Resource
                 }
             })
             ->columns([
+                Tables\Columns\TextColumn::make('name')
+                    ->toggleable()
+                    ->searchable()
+                    ->limit(50),
                 Tables\Columns\TextColumn::make('writer.name')
                     ->toggleable()
+                    ->limit(50),
+                Tables\Columns\TextColumn::make('location.name')
+                    ->toggleable()
+                    ->limit(50),
+                Tables\Columns\TextColumn::make('phone')
+                    ->toggleable()
+                    ->searchable()
                     ->limit(50),
                 Tables\Columns\TextColumn::make('principal_site.name')
                     ->toggleable()
                     ->limit(50),
                 Tables\Columns\TextColumn::make('typology.name')
                     ->toggleable()
-                    ->limit(50),
-                Tables\Columns\TextColumn::make('name')
-                    ->toggleable()
-                    ->searchable()
-                    ->limit(50),
-                Tables\Columns\TextColumn::make('phone')
-                    ->toggleable()
-                    ->searchable()
-                    ->limit(50),
-                Tables\Columns\TextColumn::make('writer_relationship')
-                    ->toggleable()
-                    ->searchable()
-                    ->limit(50),
-//                Tables\Columns\TextColumn::make('en_write')
-//                    ->toggleable()
-//                    ->searchable()
-//                    ->enum([
-//                        'Deloc' => 'Deloc',
-//                        'Putin' => 'Putin',
-//                        'Mediu' => 'Mediu',
-//                        'Bine' => 'Bine',
-//                        'Foarte bine' => 'Foarte bine',
-//                    ]),
-//                Tables\Columns\TextColumn::make('en_speak')
-//                    ->toggleable()
-//                    ->searchable()
-//                    ->enum([
-//                        'Deloc' => 'Deloc',
-//                        'Putin' => 'Putin',
-//                        'Mediu' => 'Mediu',
-//                        'Bine' => 'Bine',
-//                        'Foarte bine' => 'Foarte bine',
-//                    ]),
-                Tables\Columns\TextColumn::make('check_in')
-                    ->toggleable()
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('attitude')
-                    ->toggleable()
-                    ->searchable()
-                    ->limit(50),
-                Tables\Columns\TextColumn::make('write')
-                    ->toggleable()
-                    ->searchable()
-                    ->limit(50),
-                Tables\Columns\TextColumn::make('tips_reaction_speed')
-                    ->toggleable()
-                    ->searchable()
-                    ->limit(50),
-                Tables\Columns\TextColumn::make('notes')
-                    ->toggleable()
-                    ->searchable()
                     ->limit(50),
             ])
             ->filters([

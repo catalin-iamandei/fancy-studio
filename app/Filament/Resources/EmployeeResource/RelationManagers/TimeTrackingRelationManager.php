@@ -86,7 +86,7 @@ class TimeTrackingRelationManager extends RelationManager
                         $this->ownerRecord->checkOut($data['checkout']);
                     })
                     ->hidden(function (array $data, $record) {
-                        return !$this->ownerRecord->isOnline();
+                        return !$this?->ownerRecord?->isOnline();
                     })
                     ->button()
                     ->color('danger')
