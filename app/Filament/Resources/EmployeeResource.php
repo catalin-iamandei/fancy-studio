@@ -24,6 +24,7 @@ use App\Filament\Resources\EmployeeResource\Pages;
 use HusamTariq\FilamentTimePicker\Forms\Components\TimePickerField;
 use Icetalker\FilamentStepper\Forms\Components\Stepper;
 use Illuminate\Database\Eloquent\Builder;
+use Webbingbrasil\FilamentCopyActions\Forms\Actions\CopyAction;
 
 class EmployeeResource extends Resource
 {
@@ -196,11 +197,12 @@ class EmployeeResource extends Resource
                                         ->disableOptionsWhenSelectedInSiblingRepeaterItems()
                                         ->columnSpan(4),
                                     Forms\Components\TextInput::make('username')
-//                                        ->prefixAction(CopyAction::make())
+                                        ->prefixAction(CopyAction::make())
                                         ->required()
                                         ->columnSpan(4),
 
                                     Forms\Components\TextInput::make('password')
+                                        ->prefixAction(CopyAction::make())
                                         ->required()
                                         ->columnSpan(4),
                                 ])
@@ -212,11 +214,12 @@ class EmployeeResource extends Resource
                         ->visible(fn() => auth()->user()->hasRole('super_admin'))
                         ->schema([
                             Forms\Components\TextInput::make('intern_mail')
-//                                        ->prefixAction(CopyAction::make())
+                                ->prefixAction(CopyAction::make())
                                 ->required()
                                 ->columnSpan(6),
 
                             Forms\Components\TextInput::make('intern_mail_password')
+                                ->prefixAction(CopyAction::make())
                                 ->required()
                                 ->columnSpan(6),
                         ])

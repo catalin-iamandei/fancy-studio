@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Shield\RoleResource\Pages;
 
 use App\Filament\Resources\Shield\RoleResource;
+use App\Traits\AfterSaveRedirectToIndex;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Support\Arr;
@@ -10,6 +11,8 @@ use Illuminate\Support\Collection;
 
 class CreateRole extends CreateRecord
 {
+    use AfterSaveRedirectToIndex;
+
     protected static string $resource = RoleResource::class;
 
     public Collection $permissions;
