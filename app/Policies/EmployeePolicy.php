@@ -36,7 +36,7 @@ class EmployeePolicy
      */
     public function update(User $user, Employee $model): bool
     {
-        return $user->can('update_employee');
+        return $user->can('update_employee') || auth()->user()->is_writer;
     }
 
     /**
