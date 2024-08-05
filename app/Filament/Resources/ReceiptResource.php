@@ -11,13 +11,13 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
 
 class ReceiptResource extends Resource
 {
     protected static ?string $model = Receipt::class;
+
+    public static ?string $label = 'Statistic';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -79,6 +79,9 @@ class ReceiptResource extends Resource
         return [
             Tables\Columns\TextColumn::make('employee.name')
                 ->label('Model')
+                ->icon(fn($record) => 'heroicon-o-user')
+                ->url(fn ($record): string => route('filament.admin.resources.employees.edit', ['record' => $record->employee]))
+                ->color('primary')
                 ->hidden($fromRelation),
             Tables\Columns\TextColumn::make('employee.location.name')
                 ->hidden($fromRelation),
