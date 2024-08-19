@@ -16,13 +16,14 @@ return new class extends Migration {
             $table
                 ->bigInteger('principal_site_id')
                 ->unsigned()
+                ->nullable()
                 ->after('en_speak');
             $table
                 ->foreign('principal_site_id')
                 ->references('id')
                 ->on('sites')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
+                ->nullOnDelete()
+                ->onUpdate('set null');
         });
     }
 

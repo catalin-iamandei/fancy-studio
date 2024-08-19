@@ -13,23 +13,23 @@ return new class extends Migration {
     public function up()
     {
         Schema::create('employee_site', function (Blueprint $table) {
-            $table->bigInteger('site_id')->unsigned();
-            $table->bigInteger('employee_id')->unsigned();
-            $table->string('username');
-            $table->string('password');
+            $table->bigInteger('site_id')->unsigned()->nullable();
+            $table->bigInteger('employee_id')->unsigned()->nullable();
+            $table->string('username')->nullable();
+            $table->string('password')->nullable();
 
             $table
                 ->foreign('site_id')
                 ->references('id')
                 ->on('sites')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
+                ->nullOnDelete()
+                ->onUpdate('set null');
             $table
                 ->foreign('employee_id')
                 ->references('id')
                 ->on('employees')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
+                ->nullOnDelete()
+                ->onUpdate('set null');
         });
     }
 

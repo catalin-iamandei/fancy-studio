@@ -20,8 +20,8 @@ return new class extends Migration
                 ->nullOnDelete()
                 ->cascadeOnUpdate();
             $table->date('date_start')->after('typology_id');
-            $table->string('intern_mail')->after('tips_reaction_proportional');
-            $table->string('intern_mail_password')->after('intern_mail');
+            $table->string('intern_mail')->after('tips_reaction_proportional')->nullable();
+            $table->string('intern_mail_password')->after('intern_mail')->nullable();
         });
     }
 

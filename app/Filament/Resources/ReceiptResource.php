@@ -5,12 +5,15 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ReceiptResource\Pages;
 use App\Filament\Resources\ReceiptResource\RelationManagers;
 use App\Models\Receipt;
+use App\Models\Site;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Str;
 use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
 
 class ReceiptResource extends Resource
@@ -78,23 +81,36 @@ class ReceiptResource extends Resource
     {
         return [
             Tables\Columns\TextColumn::make('employee.name')
+                ->sortable()
+                ->searchable()
                 ->label('Model')
                 ->icon(fn($record) => 'heroicon-o-user')
-                ->url(fn ($record): string => route('filament.admin.resources.employees.edit', ['record' => $record->employee]))
+                ->url(fn ($record): string => $record && $record->employee ? route('filament.admin.resources.employees.edit', ['record' => $record->employee]) : '')
                 ->color('primary')
                 ->hidden($fromRelation),
             Tables\Columns\TextColumn::make('employee.location.name')
+                ->sortable()
+                ->searchable()
                 ->hidden($fromRelation),
-            Tables\Columns\TextColumn::make('employee.writer.name')
+            Tables\Columns\TextColumn::make('writer.name')
+                ->sortable()
+                ->searchable()
                 ->hidden($fromRelation),
             Tables\Columns\TextColumn::make('date')->date(),
-            Tables\Columns\TextColumn::make('site.name'),
+            Tables\Columns\ViewColumn::make('sites')
+                ->view('filament.tables.columns.receipt_sites'),
             Tables\Columns\TextColumn::make('amount')
+                ->label('Total')
                 ->prefix('$')
                 ->summarize(Tables\Columns\Summarizers\Sum::make()
                     ->label('Total')
                     ->numeric()
-                ),
+                )
+//                ->summarize(Tables\Columns\Summarizers\Sum::make()
+//                    ->label('Total')
+//                    ->numeric()
+//                )
+            ,
         ];
     }
 
@@ -102,31 +118,58 @@ class ReceiptResource extends Resource
     {
         return [
             Select::make('employee_id')
-                ->columnSpan(3)
+                ->columnSpan(6)
                 ->hidden($fromRelation)
+                ->required()
                 ->relationship('employee', 'name'),
             Forms\Components\DatePicker::make('date')
                 ->required()
                 ->default(today())
                 ->maxDate(today())
                 ->native(false)
-                ->columnSpan($fromRelation ? 4 : 3),
-            Select::make('site_id')
-                ->rules(['exists:sites,id'])
-                ->required()
-                ->relationship('site', 'name')
-                ->searchable()
-                ->preload()
-                ->columnSpan($fromRelation ? 4 : 3)
-                ->placeholder('Site'),
-            Forms\Components\TextInput::make('amount')
-                ->prefix('$')
-//                    ->prefixIcon('heroicon-o-currency-dollar')
-                ->columnSpan($fromRelation ? 4 : 3)
-                ->numeric()
-                ->required()
+                ->columnSpan($fromRelation ? 12 : 6),
+
+            Forms\Components\Repeater::make('sites')
+                ->default(Site::all()->toArray())
+                ->columnSpanFull()
+                ->addable(false)
+                ->deletable(false)
+                ->reorderableWithDragAndDrop(false)
+                ->grid(1)
+                ->columns(12)
+                ->schema([
+                    Forms\Components\TextInput::make('name')
+                        ->readOnly()
+                        ->columnSpan(6),
+                    Forms\Components\TextInput::make('amount')
+                        ->prefix('$')
+                        ->numeric()
+                        ->columnSpan(6)
+                        ->required(),
+                ])
         ];
     }
+
+//    public static function sites()
+//    {
+//        $sites = Site::all()->pluck('name', 'id');
+//
+//        $res = [];
+//            foreach ($sites as $site) {
+//                $res[] = [
+//                Forms\Components\TextInput::make('sites.site_name')
+//                    ->default(fn() => $site)
+//                    ->columnSpan(6)
+//                    ->required(),
+//                Forms\Components\TextInput::make('sites.amount')
+//                    ->prefix('$')
+//                    ->numeric()
+//                    ->columnSpan(6)
+//                    ->required(),
+//                ];
+//            }
+//        return array_merge(...$res);
+//    }
 
     public static function filtersData($fromRelation = true)
     {
@@ -153,11 +196,11 @@ class ReceiptResource extends Resource
             DateRangeFilter::make('date')
                 ->ranges(config('cwd.date_picker_range'))
                 ->columnSpan($fromRelation ? 6 : 4),
-            Tables\Filters\SelectFilter::make('site')
-                ->relationship('site', 'name')
-                ->columnSpan($fromRelation ? 6 : 4)
-                ->multiple()
-                ->preload()
+//            Tables\Filters\SelectFilter::make('site')
+//                ->relationship('site', 'name')
+//                ->columnSpan($fromRelation ? 6 : 4)
+//                ->multiple()
+//                ->preload()
         ];
     }
 }

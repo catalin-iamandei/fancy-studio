@@ -72,6 +72,8 @@ class EmployeeResource extends Resource
                                 ->placeholder('Phone'),
 
                             Forms\Components\DatePicker::make('date_start')
+                                ->required()
+                                ->maxDate(now())
                                 ->native(false)
                                 ->columnSpan(4),
 
@@ -193,17 +195,14 @@ class EmployeeResource extends Resource
                                 ->schema([
                                     Forms\Components\Select::make('site_id')
                                         ->relationship('site', 'name')
-                                        ->required()
                                         ->disableOptionsWhenSelectedInSiblingRepeaterItems()
                                         ->columnSpan(4),
                                     Forms\Components\TextInput::make('username')
                                         ->prefixAction(CopyAction::make()->copyable(fn ($record) => $record?->username))
-                                        ->required()
                                         ->columnSpan(4),
 
                                     Forms\Components\TextInput::make('password')
                                         ->prefixAction(CopyAction::make()->copyable(fn ($record) => $record?->password))
-                                        ->required()
                                         ->columnSpan(4),
                                 ])
                                 ->columns(12)
@@ -215,12 +214,10 @@ class EmployeeResource extends Resource
                         ->schema([
                             Forms\Components\TextInput::make('intern_mail')
                                 ->prefixAction(CopyAction::make())
-                                ->required()
                                 ->columnSpan(6),
 
                             Forms\Components\TextInput::make('intern_mail_password')
                                 ->prefixAction(CopyAction::make())
-                                ->required()
                                 ->columnSpan(6),
                         ])
                 ]),
@@ -274,26 +271,6 @@ class EmployeeResource extends Resource
                     ->label('Typology'),
             ])
             ->actions([
-                Tables\Actions\Action::make('payments')
-                    ->label('Payments')
-                    ->form([
-                        Forms\Components\TimePicker::make('checkin')
-                            ->label('Check in time')
-                            ->default(now())
-                            ->native(false)
-                            ->required(),
-                    ])
-                    ->modalSubmitActionLabel('Check in')
-                    ->action(function (array $data, $record) {
-                        $record->checkIn($data['checkin']);
-                    })
-                    ->hidden(function (array $data, $record) {
-                        return $record->isOnline();
-                    })
-                    ->button()
-                    ->color('info')
-                    ->modalWidth('xl'),
-
                 Tables\Actions\Action::make('checkIn')
                     ->label('Check In')
                     ->form([
@@ -332,6 +309,26 @@ class EmployeeResource extends Resource
                     })
                     ->button()
                     ->color('danger')
+                    ->modalWidth('xl'),
+
+                Tables\Actions\Action::make('payments')
+                    ->label('Payments')
+                    ->form([
+                        Forms\Components\TimePicker::make('checkin')
+                            ->label('Check in time')
+                            ->default(now())
+                            ->native(false)
+                            ->required(),
+                    ])
+                    ->modalSubmitActionLabel('Check in')
+                    ->action(function (array $data, $record) {
+                        $record->checkIn($data['checkin']);
+                    })
+                    ->hidden(function (array $data, $record) {
+                        return $record->isOnline();
+                    })
+                    ->button()
+                    ->color('info')
                     ->modalWidth('xl'),
 
                 Tables\Actions\ActionGroup::make([

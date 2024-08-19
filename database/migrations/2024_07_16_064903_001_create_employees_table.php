@@ -14,7 +14,7 @@ return new class extends Migration {
     {
         Schema::create('employees', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('typology_id')->unsigned();
+            $table->bigInteger('typology_id')->unsigned()->nullable();
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
 
@@ -22,8 +22,8 @@ return new class extends Migration {
                 ->foreign('typology_id')
                 ->references('id')
                 ->on('typologies')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
+                ->nullOnDelete()
+                ->onUpdate('set null');
         });
     }
 

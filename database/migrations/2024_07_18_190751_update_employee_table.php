@@ -15,13 +15,14 @@ return new class extends Migration
             $table
                 ->bigInteger('location_id')
                 ->unsigned()
+                ->nullable()
                 ->after('id');
             $table
                 ->foreign('location_id')
                 ->references('id')
                 ->on('locations')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
+                ->nullOnDelete()
+                ->onUpdate('set null');
         });
     }
 
