@@ -42,8 +42,8 @@ class TimeTrackingRelationManager extends RelationManager
             ->recordTitleAttribute('name')
             ->defaultSort('check_in', 'desc')
             ->columns([
-                Tables\Columns\TextColumn::make('check_in'),
-                Tables\Columns\TextColumn::make('check_out'),
+                Tables\Columns\TextColumn::make('check_in')->dateTime('d.m.Y H:i'),
+                Tables\Columns\TextColumn::make('check_out')->dateTime('d.m.Y H:i'),
                 Tables\Columns\TextColumn::make('duration')
                     ->getStateUsing(fn(Model $record) => $record->check_in && $record->check_out ? $record->check_out->diff($record->check_in)->format('%H:%I') : ' - '),
             ])

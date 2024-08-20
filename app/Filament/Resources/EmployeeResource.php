@@ -311,25 +311,47 @@ class EmployeeResource extends Resource
                     ->color('danger')
                     ->modalWidth('xl'),
 
-                Tables\Actions\Action::make('payments')
-                    ->label('Payments')
+                Tables\Actions\Action::make('receipts')
+                    ->label('New Receipt')
                     ->form([
-                        Forms\Components\TimePicker::make('checkin')
-                            ->label('Check in time')
-                            ->default(now())
+                        Forms\Components\DatePicker::make('date')
+                            ->required()
+                            ->default(today())
+                            ->maxDate(today())
+                            ->displayFormat('d.m.Y')
+                            ->closeOnDateSelection()
                             ->native(false)
-                            ->required(),
+                            ->columnSpan(6),
+
+                        Forms\Components\Repeater::make('sites')
+                            ->default(Site::all()->toArray())
+                            ->columnSpanFull()
+                            ->addable(false)
+                            ->deletable(false)
+                            ->reorderableWithDragAndDrop(false)
+                            ->grid(1)
+                            ->columns(12)
+                            ->schema([
+                                Forms\Components\TextInput::make('name')
+                                    ->readOnly()
+                                    ->columnSpan(6),
+                                Forms\Components\TextInput::make('amount')
+                                    ->prefix('$')
+                                    ->numeric()
+                                    ->columnSpan(6)
+                                    ->required(),
+                            ])
                     ])
-                    ->modalSubmitActionLabel('Check in')
+                    ->modalSubmitActionLabel('Save')
                     ->action(function (array $data, $record) {
-                        $record->checkIn($data['checkin']);
+                        $record->newReceipt($data);
                     })
                     ->hidden(function (array $data, $record) {
                         return $record->isOnline();
                     })
                     ->button()
                     ->color('info')
-                    ->modalWidth('xl'),
+                    ->modalWidth('4xl'),
 
                 Tables\Actions\ActionGroup::make([
 //                    ViewAction::make(),

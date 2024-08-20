@@ -67,6 +67,16 @@ class Employee extends Model
         $timeTracking->save();
     }
 
+    public function newReceipt($data): void
+    {
+//        dd($this, $data);
+        $this->receipts()->create([
+            'employee_id' => $this->id,
+            'date' => $data['date'],
+            'sites' => $data['sites']
+        ]);
+    }
+
     public function isOnline(): bool
     {
         return $this->timeTracking()

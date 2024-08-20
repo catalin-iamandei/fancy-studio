@@ -96,7 +96,7 @@ class ReceiptResource extends Resource
                 ->sortable()
                 ->searchable()
                 ->hidden($fromRelation),
-            Tables\Columns\TextColumn::make('date')->date(),
+            Tables\Columns\TextColumn::make('date')->date('d.m.Y'),
             Tables\Columns\ViewColumn::make('sites')
                 ->view('filament.tables.columns.receipt_sites'),
             Tables\Columns\TextColumn::make('amount')
@@ -126,6 +126,8 @@ class ReceiptResource extends Resource
                 ->required()
                 ->default(today())
                 ->maxDate(today())
+                ->displayFormat('d.m.Y')
+                ->closeOnDateSelection()
                 ->native(false)
                 ->columnSpan($fromRelation ? 12 : 6),
 
