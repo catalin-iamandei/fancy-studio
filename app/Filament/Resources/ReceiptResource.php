@@ -41,6 +41,7 @@ class ReceiptResource extends Resource
             ->columns(
                 self::tableData(false)
             )
+            ->defaultGroup('employee.name')
             ->filters(
                 self::filtersData(false), layout: Tables\Enums\FiltersLayout::AboveContent
             )
