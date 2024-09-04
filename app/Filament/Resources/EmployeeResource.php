@@ -50,11 +50,11 @@ class EmployeeResource extends Resource
                 ->tabs([
                     Forms\Components\Tabs\Tab::make('Receipts')
                         ->schema([
-                            \Njxqlus\Filament\Components\Forms\RelationManager::make()->manager(ReceiptsRelationManager::class)->lazy(false)
+                            \Njxqlus\Filament\Components\Forms\RelationManager::make()->manager(ReceiptsRelationManager::class)->lazy(true)
                         ])->hidden(fn ($record): bool => !$record?->receipts),
                     Forms\Components\Tabs\Tab::make('Timesheet')
                         ->schema([
-                            \Njxqlus\Filament\Components\Forms\RelationManager::make()->manager(TimeTrackingRelationManager::class)->lazy(false)
+                            \Njxqlus\Filament\Components\Forms\RelationManager::make()->manager(TimeTrackingRelationManager::class)->lazy(true)
                         ])->hidden(fn ($record): bool => !$record?->timeTracking),
                     Forms\Components\Tabs\Tab::make('About')
                         ->columns(12)
@@ -106,7 +106,6 @@ class EmployeeResource extends Resource
 
                             Select::make('principal_site_id')
                                 ->rules(['exists:sites,id'])
-                                ->required()
                                 ->relationship('principal_site', 'name')
                                 ->searchable()
                                 ->preload()
@@ -116,7 +115,6 @@ class EmployeeResource extends Resource
 
                             Select::make('typology_id')
                                 ->rules(['exists:typologies,id'])
-                                ->required()
                                 ->relationship('typology', 'name')
                                 ->searchable()
                                 ->preload()

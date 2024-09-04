@@ -42,6 +42,17 @@ class ReceiptResource extends Resource
                 self::tableData(false)
             )
             ->defaultGroup('employee.name')
+            ->groups([
+                Tables\Grouping\Group::make('employee.name')
+                    ->label('Model'),
+                Tables\Grouping\Group::make('date')
+                    ->date()
+                    ->label('Date'),
+                Tables\Grouping\Group::make('writer.name')
+                    ->label('Writer'),
+                Tables\Grouping\Group::make('employee.location.name')
+                    ->label('Location'),
+            ])
             ->filters(
                 self::filtersData(false), layout: Tables\Enums\FiltersLayout::AboveContent
             )
