@@ -109,7 +109,7 @@ jobs:
           port: ${{ matrix.server.port }}
           envs: GITHUB_SHA,RELEASE_PATH,ACTIVE_RELEASE_PATH,STORAGE_PATH,BASE_PATH
           script: |
-            ${{ matrix.server.beforeHooks }}
+            cd ${RELEASE_PATH} && php artisan storage:link
 
   activate-release:
     name: "${{ matrix.server.name }}: Activate release"
