@@ -114,6 +114,7 @@ jobs:
             ln -s -f ${BASE_PATH}/.env $RELEASE_PATH
             ln -s -f $STORAGE_PATH $RELEASE_PATH
             ln -s -n -f $RELEASE_PATH $ACTIVE_RELEASE_PATH
+            cd ${RELEASE_PATH} && php artisan storage:link
   clean-up:
     name: "${{ matrix.server.name }}: Clean up"
     runs-on: ubuntu-latest
@@ -136,4 +137,3 @@ jobs:
           script: |
             cd $RELEASES_PATH && ls -t -1 | tail -n +4 | xargs rm -rf
             cd $ARTIFACTS_PATH && ls -t -1 | tail -n +1 | xargs rm -rf
-            cd ${RELEASE_PATH} && php artisan storage:link
