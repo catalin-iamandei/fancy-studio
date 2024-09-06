@@ -2,6 +2,8 @@
 
 namespace App\Filament\Pages;
 
+use App\Filament\Widgets\OnlineModels;
+use App\Filament\Widgets\Statistics;
 use Filament\Facades\Filament;
 use Filament\Pages\Page;
 use Filament\Support\Facades\FilamentIcon;
@@ -41,7 +43,10 @@ class Dashboard extends Page
      */
     public function getWidgets(): array
     {
-        return Filament::getWidgets();
+        return [
+            Statistics::class,
+            OnlineModels::class
+        ];
     }
 
     /**
