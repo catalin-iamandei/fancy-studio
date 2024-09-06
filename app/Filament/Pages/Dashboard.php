@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use App\Filament\Widgets\ModelsTable;
 use App\Filament\Widgets\OnlineModels;
 use App\Filament\Widgets\Statistics;
 use Filament\Facades\Filament;
@@ -45,7 +46,8 @@ class Dashboard extends Page
     {
         return [
             Statistics::class,
-            OnlineModels::class
+            OnlineModels::class,
+            ModelsTable::class
         ];
     }
 

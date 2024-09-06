@@ -29,7 +29,7 @@ class SiteResource extends Resource
                     ->columnSpan(6)
                     ->maxLength(255),
                 Forms\Components\Toggle::make('payment_to_employee')
-                    ->label('Payment to employee')
+                    ->label('Payment to model')
                     ->columnSpan(6),
             ])->columns(12);
     }
@@ -41,6 +41,7 @@ class SiteResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 IconColumn::make('payment_to_employee')
+                    ->label('Payment to model')
                     ->boolean()
                     ->trueIcon('heroicon-o-check')->trueColor('black')
                     ->falseIcon('heroicon-o-x-mark')->falseColor('black'),

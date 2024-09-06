@@ -83,6 +83,7 @@ class EmployeeResource extends Resource
                                 ->relationship('writer', 'name')
                                 ->searchable()
                                 ->preload()
+                                ->disabled(fn() => !auth()->user()->roles()->exists())
                                 ->columnSpan(6),
 
                             Select::make('location_id')
@@ -91,6 +92,7 @@ class EmployeeResource extends Resource
                                 ->relationship('location', 'name')
                                 ->searchable()
                                 ->preload()
+                                ->disabled(fn() => !auth()->user()->roles()->exists())
                                 ->columnSpan(6),
 
 //                            Forms\Components\TimePicker::make('check_in')
