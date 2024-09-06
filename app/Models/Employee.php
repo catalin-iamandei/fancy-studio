@@ -79,13 +79,18 @@ class Employee extends Model
 
     public function isOnline(): bool
     {
-        return $this->timeTracking()
-            ->whereDate('check_in', today())
-            ->where(function ($query) {
-                $query->whereDate('check_out', '!=', today())
-                    ->orWhereNull('check_out');
-            })
-            ->exists();
+        if(!$this?->timeTracking()?->exists() || $this?->timeTracking?->last()?->check_out) {
+            return false;
+        }
+        return true;
+
+//        return $this->timeTracking()
+//            ->whereDate('check_in', today())
+//            ->where(function ($query) {
+//                $query->whereDate('check_out', '!=', today())
+//                    ->orWhereNull('check_out');
+//            })
+//            ->exists();
     }
 
     public function finishedWorkedToday(): bool
