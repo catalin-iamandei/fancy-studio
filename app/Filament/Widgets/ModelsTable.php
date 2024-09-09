@@ -22,20 +22,14 @@ class ModelsTable extends BaseWidget
                 $query->whereDate('check_in', today());
             });
 
-        $isWriter = auth()?->user()?->is_writer;
-
-        if($isWriter) {
-            $query->where('writer_id', auth()->user()->id);
-        }
+//        $isWriter = auth()?->user()?->is_writer;
+//
+//        if($isWriter) {
+//            $query->where('writer_id', auth()->user()->id);
+//        }
 
         return $query;
     }
-
-//    protected function applyDefaultSortingToTableQuery(Builder $query): Builder
-//    {
-//        return $query
-//            ->orderBy('check_in');
-//    }
 
     protected function getTableColumns(): array
     {

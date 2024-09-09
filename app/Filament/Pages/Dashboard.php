@@ -5,6 +5,7 @@ namespace App\Filament\Pages;
 use App\Filament\Widgets\ModelsTable;
 use App\Filament\Widgets\OnlineModels;
 use App\Filament\Widgets\Statistics;
+use App\Filament\Widgets\WritersStatistics;
 use Filament\Facades\Filament;
 use Filament\Pages\Page;
 use Filament\Support\Facades\FilamentIcon;
@@ -45,6 +46,7 @@ class Dashboard extends Page
     public function getWidgets(): array
     {
         return [
+            WritersStatistics::class,
             Statistics::class,
             OnlineModels::class,
             ModelsTable::class

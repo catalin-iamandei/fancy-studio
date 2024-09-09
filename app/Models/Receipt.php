@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Casts\Attribute;
+use App\Models\Scopes\ReceiptScope;
 use Illuminate\Database\Eloquent\Model;
 
 class Receipt extends Model
@@ -25,6 +25,8 @@ class Receipt extends Model
 
     protected static function booted(): void
     {
+        static::addGlobalScope(new ReceiptScope);
+
         static::creating(function (Receipt $receipt) {
             $receipt->writer_id = auth()->user()->id;
             $receipt->amount = $receipt->getTotalAmount();

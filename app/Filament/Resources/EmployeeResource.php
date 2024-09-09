@@ -34,13 +34,13 @@ class EmployeeResource extends Resource
 
     public static ?string $label = 'Model';
 
-    public static function getEloquentQuery(): Builder
-    {
-        if(!auth()->user()->can('view_employee') && auth()->user()->is_writer) {
-            return parent::getEloquentQuery()->where('writer_id', auth()->user()->id);
-        }
-        return parent::getEloquentQuery();
-    }
+//    public static function getEloquentQuery(): Builder
+//    {
+//        if(!auth()->user()->can('view_employee') && auth()->user()->is_writer) {
+//            return parent::getEloquentQuery()->where('writer_id', auth()->user()->id);
+//        }
+//        return parent::getEloquentQuery();
+//    }
 
     public static function form(Form $form): Form
     {
@@ -84,7 +84,7 @@ class EmployeeResource extends Resource
                                 ->searchable()
                                 ->preload()
                                 ->disabled(fn() => !auth()->user()->roles()->exists())
-                                ->columnSpan(6),
+                                ->columnSpan(4),
 
                             Select::make('location_id')
                                 ->rules(['exists:locations,id'])
@@ -93,7 +93,16 @@ class EmployeeResource extends Resource
                                 ->searchable()
                                 ->preload()
                                 ->disabled(fn() => !auth()->user()->roles()->exists())
-                                ->columnSpan(6),
+                                ->columnSpan(4),
+
+                            Select::make('shift_id')
+                                ->rules(['exists:shifts,id'])
+                                ->required()
+                                ->relationship('shift', 'name')
+                                ->searchable()
+                                ->preload()
+                                ->disabled(fn() => !auth()->user()->roles()->exists())
+                                ->columnSpan(4),
 
 //                            Forms\Components\TimePicker::make('check_in')
 //                                ->seconds(false)
@@ -244,14 +253,14 @@ class EmployeeResource extends Resource
                 Tables\Columns\TextColumn::make('location.name')
                     ->toggleable()
                     ->limit(50),
+                Tables\Columns\TextColumn::make('shift.name')
+                    ->toggleable()
+                    ->limit(50),
                 Tables\Columns\TextColumn::make('phone')
                     ->toggleable()
                     ->searchable()
                     ->limit(50),
                 Tables\Columns\TextColumn::make('principal_site.name')
-                    ->toggleable()
-                    ->limit(50),
-                Tables\Columns\TextColumn::make('typology.name')
                     ->toggleable()
                     ->limit(50),
             ])

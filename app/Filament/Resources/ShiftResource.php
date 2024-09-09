@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\LocationResource\Pages;
-use App\Filament\Resources\LocationResource\RelationManagers;
-use App\Models\Location;
+use App\Filament\Resources\ShiftResource\Pages;
+use App\Filament\Resources\ShiftResource\RelationManagers;
+use App\Models\Shift;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,11 +13,12 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class LocationResource extends Resource
+class ShiftResource extends Resource
 {
-    protected static ?string $model = Location::class;
+    protected static ?string $model = Shift::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-map-pin';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $recordTitleAttribute = 'name';
     protected static ?string $navigationGroup = 'Settings';
 
     public static function form(Form $form): Form
@@ -26,6 +27,7 @@ class LocationResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required()
+                    ->columnSpan(12)
                     ->maxLength(255),
             ]);
     }
@@ -61,17 +63,16 @@ class LocationResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RelationManagers\ShiftsRelationManager::class,
-            RelationManagers\EmployeesRelationManager::class
+            //
         ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListLocations::route('/'),
-            'create' => Pages\CreateLocation::route('/create'),
-            'edit' => Pages\EditLocation::route('/{record}/edit'),
+            'index' => Pages\ListShifts::route('/'),
+            'create' => Pages\CreateShift::route('/create'),
+            'edit' => Pages\EditShift::route('/{record}/edit'),
         ];
     }
 }

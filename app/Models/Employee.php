@@ -2,12 +2,18 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\EmployeeScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Employee extends Model
 {
     protected $guarded = [];
+
+    protected static function booted(): void
+    {
+        static::addGlobalScope(new EmployeeScope);
+    }
 
     public function writer()
     {
@@ -22,6 +28,11 @@ class Employee extends Model
     public function location()
     {
         return $this->belongsTo(Location::class);
+    }
+
+    public function shift()
+    {
+        return $this->belongsTo(Shift::class);
     }
 
     public function sites()

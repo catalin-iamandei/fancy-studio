@@ -75,4 +75,18 @@ class User extends Authenticatable implements FilamentUser, HasMedia, HasAvatar
     {
         return $this->hasVerifiedEmail();
     }
+
+    public function locations()
+    {
+        return $this->belongsToMany(Location::class, 'location_shift_user')->withTimestamps()->using(LocationShiftUser::class);
+    }
+    public function shifts()
+    {
+        return $this->belongsToMany(Shift::class, 'location_shift_user')->withTimestamps()->using(LocationShiftUser::class);
+    }
+
+    public function shift()
+    {
+        return $this->hasMany(Shift::class);
+    }
 }
