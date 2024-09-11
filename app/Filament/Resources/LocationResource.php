@@ -5,6 +5,8 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\LocationResource\Pages;
 use App\Filament\Resources\LocationResource\RelationManagers;
 use App\Models\Location;
+use App\Models\Shift;
+use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -26,7 +28,27 @@ class LocationResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required()
+                    ->columnSpan(12)
                     ->maxLength(255),
+                Forms\Components\Repeater::make('shifts')
+                    ->label('Shift & User to Location')
+                    ->relationship('customerFields')
+                    ->schema([
+                        Forms\Components\Select::make('shift_id')
+                            ->label('Shift')
+                            ->options(Shift::pluck('name', 'id')->toArray())
+//                            ->disableOptionsWhenSelectedInSiblingRepeaterItems()
+                            ->required()
+                            ->live()
+                            ->columnSpan(6),
+                        Forms\Components\Select::make('user_id')
+                            ->label('User')
+                            ->options(User::pluck('name', 'id')->toArray())
+//                            ->disableOptionsWhenSelectedInSiblingRepeaterItems()
+                            ->required()
+                            ->live()
+                            ->columnSpan(6),
+                    ])->columns(12)->columnSpan(12)
             ]);
     }
 
@@ -43,7 +65,7 @@ class LocationResource extends Resource
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: true)
             ])
             ->filters([
                 //
@@ -61,7 +83,7 @@ class LocationResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RelationManagers\ShiftsRelationManager::class,
+//            RelationManagers\ShiftsRelationManager::class,
             RelationManagers\EmployeesRelationManager::class
         ];
     }

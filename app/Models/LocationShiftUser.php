@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class LocationShiftUser extends Pivot
 {
-//    protected $table = 'location_shift_user';
+    protected $table = 'location_shift_user';
     protected $guarded = [];
 
     public function location()

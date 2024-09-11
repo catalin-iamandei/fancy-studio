@@ -38,8 +38,7 @@ class OnlineModels extends BaseWidget
             foreach ($onlineModelsPerLocation as $name => $value) {
                 $widgets[] = Stat::make('Modele online - ' . $name,  $value)
 //            ->chartColor($statsToday >= $statsYesterday ? 'success' : 'danger')
-                    ->url(ReceiptResource::getUrl())
-                    ->icon('heroicon-o-banknotes');
+                    ->icon('heroicon-o-computer-desktop');
             }
             return $widgets;
         } else if($isWriter) {
@@ -65,8 +64,7 @@ class OnlineModels extends BaseWidget
             foreach ($onlineModelsPerLocation as $name => $value) {
                 $widgets[] = Stat::make('Modele online - ' . $name,  $value)
 //            ->chartColor($statsToday >= $statsYesterday ? 'success' : 'danger')
-                    ->url(ReceiptResource::getUrl())
-                    ->icon('heroicon-o-banknotes');
+                    ->icon('heroicon-o-computer-desktop');
             }
             return $widgets;
         } else {
@@ -89,8 +87,7 @@ class OnlineModels extends BaseWidget
             foreach ($onlineModelsPerLocation as $name => $value) {
                 $widgets[] = Stat::make('Modele online - ' . $name,  $value)
 //            ->chartColor($statsToday >= $statsYesterday ? 'success' : 'danger')
-                    ->url(ReceiptResource::getUrl())
-                    ->icon('heroicon-o-banknotes');
+                    ->icon('heroicon-o-computer-desktop');
             }
             return $widgets;
         }

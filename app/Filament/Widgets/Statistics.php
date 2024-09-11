@@ -24,7 +24,7 @@ class Statistics extends BaseWidget
 
         $receiptsTodayStat = Stat::make('Incasari modele zi curenta',  '$'.$receiptsToday->sum('amount'))
 //            ->chartColor($statsToday >= $statsYesterday ? 'success' : 'danger')
-            ->url(ReceiptResource::getUrl())
+            ->url(auth()->user()->can('view_receipt') ? ReceiptResource::getUrl() : null)
             ->icon('heroicon-o-banknotes');
 //            ->chart([1, 6, 3, 8, 2, 5, 1, 10]);
 
@@ -40,7 +40,7 @@ class Statistics extends BaseWidget
         }
 
         $receiptsThisPeriodStat = Stat::make('Incasari modele perioada curenta',  '$'.$receiptsThisPeriod->sum('amount'))
-            ->url(ReceiptResource::getUrl())
+            ->url(auth()->user()->can('view_receipt') ? ReceiptResource::getUrl() : null)
             ->icon('heroicon-o-banknotes');
 
         // Widget incasari perioada anterioara
@@ -54,7 +54,7 @@ class Statistics extends BaseWidget
         }
 
         $receiptsLastPeriodStat = Stat::make('Incasari modele perioada anterioara',  '$'.$receiptsLastPeriod->sum('amount'))
-            ->url(ReceiptResource::getUrl())
+            ->url(auth()->user()->can('view_receipt') ? ReceiptResource::getUrl() : null)
             ->icon('heroicon-o-banknotes');
 
         return [
