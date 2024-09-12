@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ReceiptResource\Pages;
-use App\Filament\Resources\ReceiptResource\RelationManagers;
 use App\Models\Receipt;
 use App\Models\Site;
 use Filament\Forms;
@@ -12,8 +11,6 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Query\Builder;
-use Illuminate\Support\Str;
 use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
 
 class ReceiptResource extends Resource
@@ -194,6 +191,12 @@ class ReceiptResource extends Resource
                 ->hidden($fromRelation)
                 ->columnSpan(4)
                 ->relationship('employee.location', 'name'),
+            Tables\Filters\SelectFilter::make('shift')
+                ->multiple()
+                ->preload()
+                ->hidden($fromRelation)
+                ->columnSpan(4)
+                ->relationship('employee.shift', 'name'),
             Tables\Filters\SelectFilter::make('writer')
                 ->multiple()
                 ->preload()
