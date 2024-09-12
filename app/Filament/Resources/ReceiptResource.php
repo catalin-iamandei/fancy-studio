@@ -34,7 +34,7 @@ class ReceiptResource extends Resource
     {
         return $table
             ->paginated(false)
-            ->defaultSort('created_at', 'desc')
+            ->defaultSort('date', 'desc')
             ->recordTitleAttribute('name')
             ->columns(
                 self::tableData(false)
