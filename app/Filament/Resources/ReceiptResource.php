@@ -36,7 +36,7 @@ class ReceiptResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->defaultSort('created_at', 'desc')
+            ->defaultSort('date', 'desc')
             ->recordTitleAttribute('name')
             ->columns(
                 self::tableData(false)
