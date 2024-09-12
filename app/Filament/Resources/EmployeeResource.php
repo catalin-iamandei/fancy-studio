@@ -236,6 +236,7 @@ class EmployeeResource extends Resource
     public static function table(Table $table, $fromRelationManager = false): Table
     {
         return $table
+            ->paginated(false)
             ->poll('60s')
             ->modifyQueryUsing(function (Builder $query) use ($fromRelationManager) {
                 if (!$fromRelationManager) {

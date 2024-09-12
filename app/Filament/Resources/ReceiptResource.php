@@ -33,6 +33,7 @@ class ReceiptResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->paginated(false)
             ->defaultSort('created_at', 'desc')
             ->recordTitleAttribute('name')
             ->columns(
