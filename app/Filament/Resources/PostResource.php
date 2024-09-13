@@ -2,14 +2,20 @@
 
 namespace App\Filament\Resources;
 
+use AmidEsfahani\FilamentTinyEditor\TinyEditor;
 use App\Filament\Resources\PostResource\Pages\CreatePost;
 use App\Filament\Resources\PostResource\Pages\EditPost;
 use App\Filament\Resources\PostResource\Pages\ListPosts;
+use App\Filament\Resources\PostResource\Pages\ViewPost;
 use App\Models\Post;
+use Filament\Actions\Action;
+use Filament\Actions\ViewAction;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -26,6 +32,8 @@ class PostResource extends Resource
 
     protected static ?string $navigationGroup = 'Tutorials';
 
+    protected static ?string $label = 'Tutorials';
+
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
     protected static ?int $navigationSort = 0;
@@ -38,7 +46,13 @@ class PostResource extends Resource
                     ->schema([
                         Forms\Components\TextInput::make('title')
                             ->required(),
-                        Forms\Components\RichEditor::make('content')
+                        TinyEditor::make('content')
+                            ->fileAttachmentsDisk('public')
+                            ->fileAttachmentsVisibility('public')
+                            ->fileAttachmentsDirectory('uploads')
+                            ->profile('default|simple|full|minimal|none|custom')
+                            ->columnSpan('full')
+                            ->required()
                     ])
                     ->columnSpan(2),
                 Forms\Components\Section::make()
@@ -56,6 +70,7 @@ class PostResource extends Resource
                         Forms\Components\Select::make('blog_category_id')
                             ->relationship(name: 'category', titleAttribute: 'name')
                             ->searchable()
+                            ->preload()
                             ->required(),
                     ])
                     ->columnSpan(1),
@@ -80,7 +95,10 @@ class PostResource extends Resource
                     ->date()
                     ->sortable(),
             ])->defaultSort('created_at', 'DESC')
-            ->filters([
+            ->actions([
+                \Filament\Tables\Actions\ViewAction::make(),
+                EditAction::make(),
+                DeleteAction::make()
             ]);
     }
 
@@ -96,6 +114,7 @@ class PostResource extends Resource
         return [
             'index' => ListPosts::route('/'),
             'create' => CreatePost::route('/create'),
+            'view' => ViewPost::route('/{record}'),
             'edit' => EditPost::route('/{record}/edit'),
         ];
     }
@@ -107,17 +126,13 @@ class PostResource extends Resource
 
     public static function getGloballySearchableAttributes(): array
     {
-        return ['title', 'slug', 'author.name', 'category.name'];
+        return ['title', 'category.name'];
     }
 
     public static function getGlobalSearchResultDetails(Model $record): array
     {
         /** @var Post $record */
         $details = [];
-
-        if ($record->author) {
-            $details['Author'] = $record->author->name;
-        }
 
         if ($record->category) {
             $details['Category'] = $record->category->name;

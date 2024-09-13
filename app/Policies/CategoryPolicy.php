@@ -12,7 +12,7 @@ class CategoryPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_category');
+        return true;
     }
 
     /**
@@ -20,7 +20,7 @@ class CategoryPolicy
      */
     public function view(User $user, Category $model): bool
     {
-        return $user->can('view_category');
+        return true;
     }
 
     /**

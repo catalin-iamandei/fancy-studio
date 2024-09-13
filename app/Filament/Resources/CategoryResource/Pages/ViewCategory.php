@@ -10,8 +10,16 @@ class ViewCategory extends ViewRecord
 {
     protected static string $resource = CategoryResource::class;
 
+    protected static string $view = 'filament.app.view-category';
+
+    public function getTitle(): string
+    {
+        return '';
+    }
+
     public function getHeaderActions(): array
     {
         return [EditAction::make()];
     }
+
 }

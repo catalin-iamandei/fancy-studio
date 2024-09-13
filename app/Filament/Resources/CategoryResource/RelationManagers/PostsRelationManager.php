@@ -2,13 +2,18 @@
 
 namespace App\Filament\Resources\CategoryResource\RelationManagers;
 
+use AmidEsfahani\FilamentTinyEditor\TinyEditor;
+use App\Filament\Resources\PostResource\Pages\CreatePost;
+use App\Filament\Resources\PostResource\Pages\EditPost;
+use App\Filament\Resources\PostResource\Pages\ListPosts;
+use App\Filament\Resources\PostResource\Pages\ViewPost;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
+use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class PostsRelationManager extends RelationManager
 {
@@ -18,16 +23,45 @@ class PostsRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('title')
-                    ->required()
-                    ->maxLength(255),
-            ]);
+                Forms\Components\Section::make()
+                    ->schema([
+                        Forms\Components\TextInput::make('title')
+                            ->required(),
+                        TinyEditor::make('content')
+                            ->fileAttachmentsDisk('public')
+                            ->fileAttachmentsVisibility('public')
+                            ->fileAttachmentsDirectory('uploads')
+                            ->profile('default|simple|full|minimal|none|custom')
+                            ->columnSpan('full')
+                            ->required()
+                    ])
+                    ->columnSpan(2),
+                Forms\Components\Section::make()
+                    ->schema([
+                        Forms\Components\FileUpload::make('banner')
+                            ->label('Image')
+                            ->image()
+                            ->maxSize(config('filament-blog.banner.maxSize', 5120))
+                            ->imageCropAspectRatio(config('filament-blog.banner.cropAspectRatio', '16:9'))
+                            ->disk(config('filament-blog.banner.disk', 'public'))
+                            ->directory(config('filament-blog.banner.directory', 'blog')),
+
+//                        self::getContentEditor('content'),
+
+                        Forms\Components\Select::make('blog_category_id')
+                            ->relationship(name: 'category', titleAttribute: 'name')
+                            ->preload()
+                            ->searchable()
+                            ->required(),
+                    ])
+                    ->columnSpan(1),
+            ])
+            ->columns(3);
     }
 
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('title')
             ->columns([
                 Tables\Columns\ImageColumn::make('banner')
                     ->label('Image'),
@@ -41,21 +75,28 @@ class PostsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('created_at')
                     ->date()
                     ->sortable(),
-            ])
-            ->filters([
-                //
-            ])
-            ->headerActions([
-                Tables\Actions\CreateAction::make(),
-            ])
+            ])->defaultSort('created_at', 'DESC')
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+//                \Filament\Tables\Actions\ViewAction::make(),
+                EditAction::make(),
+                DeleteAction::make()
             ]);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => ListPosts::route('/'),
+            'create' => CreatePost::route('/create'),
+            'view' => ViewPost::route('/{record}'),
+            'edit' => EditPost::route('/{record}/edit'),
+        ];
     }
 }

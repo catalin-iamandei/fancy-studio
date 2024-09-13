@@ -12,7 +12,7 @@ class PostPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_post');
+        return true;
     }
 
     /**
@@ -20,7 +20,7 @@ class PostPolicy
      */
     public function view(User $user, Post $model): bool
     {
-        return $user->can('view_post');
+        return true;
     }
 
     /**
