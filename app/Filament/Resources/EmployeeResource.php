@@ -266,20 +266,36 @@ class EmployeeResource extends Resource
                     ->limit(50),
             ])
             ->filters([
-                SelectFilter::make('principal_site_id')
-                    ->relationship('principal_site', 'name')
-                    ->indicator('Site')
+                Tables\Filters\SelectFilter::make('location')
                     ->multiple()
                     ->preload()
-                    ->label('Site'),
+                    ->columnSpan(4)
+                    ->relationship('location', 'name'),
+                Tables\Filters\SelectFilter::make('shift')
+                    ->multiple()
+                    ->preload()
+                    ->columnSpan(4)
+                    ->relationship('shift', 'name'),
+                Tables\Filters\SelectFilter::make('writer')
+                    ->multiple()
+                    ->preload()
+                    ->columnSpan(4)
+                    ->relationship('writer', 'name'),
 
-                SelectFilter::make('typology_id')
-                    ->relationship('typology', 'name')
-                    ->indicator('Typology')
-                    ->multiple()
-                    ->preload()
-                    ->label('Typology'),
-            ])
+//                SelectFilter::make('principal_site_id')
+//                    ->relationship('principal_site', 'name')
+//                    ->indicator('Principal Site')
+//                    ->multiple()
+//                    ->preload()
+//                    ->label('Site'),
+
+//                SelectFilter::make('typology_id')
+//                    ->relationship('typology', 'name')
+//                    ->indicator('Typology')
+//                    ->multiple()
+//                    ->preload()
+//                    ->label('Typology'),
+            ], layout: Tables\Enums\FiltersLayout::AboveContent)->filtersFormColumns(12)
             ->actions([
                 Tables\Actions\Action::make('checkIn')
                     ->label('Check In')

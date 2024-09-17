@@ -24,7 +24,7 @@ class ReceiptsRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
-            ->defaultSort('created_at', 'desc')
+            ->defaultSort('date', 'desc')
             ->recordTitleAttribute('name')
             ->columns(
                 ReceiptResource::tableData()
