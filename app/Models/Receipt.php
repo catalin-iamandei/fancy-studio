@@ -45,9 +45,14 @@ class Receipt extends Model
 //    {
 //        return $this->belongsTo(Site::class);
 //    }
-    public function employee(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function employeeWithScope(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Employee::class);
+    }
+
+    public function employee(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Employee::class)->withoutGlobalScopes();
     }
 
     public function getTotalAmount()

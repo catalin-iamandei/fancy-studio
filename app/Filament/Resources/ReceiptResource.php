@@ -131,7 +131,7 @@ class ReceiptResource extends Resource
                 ->columnSpan(6)
                 ->hidden($fromRelation)
                 ->required()
-                ->relationship('employee', 'name'),
+                ->relationship('employeeWithScope', 'name'),
             Forms\Components\DatePicker::make('date')
                 ->required()
                 ->default(today())
@@ -201,7 +201,7 @@ class ReceiptResource extends Resource
             Tables\Filters\SelectFilter::make('writer')
                 ->multiple()
                 ->preload()
-                ->hidden($fromRelation)
+                ->hidden($fromRelation || auth()->user()->hasRole('Writer'))
                 ->columnSpan(4)
                 ->relationship('writer', 'name'),
             Tables\Filters\SelectFilter::make('employee')
