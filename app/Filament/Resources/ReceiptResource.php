@@ -203,7 +203,7 @@ class ReceiptResource extends Resource
                 ->preload()
                 ->hidden($fromRelation)
                 ->columnSpan(4)
-                ->relationship('employee.writer', 'name'),
+                ->relationship('writer', 'name'),
             Tables\Filters\SelectFilter::make('employee')
                 ->label('Model')
                 ->multiple()
