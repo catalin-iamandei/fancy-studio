@@ -130,6 +130,7 @@ class ReceiptResource extends Resource
             Select::make('employee_id')
                 ->columnSpan(6)
                 ->hidden($fromRelation)
+                ->label('Model')
                 ->required()
                 ->relationship('employeeWithScope', 'name'),
             Forms\Components\DatePicker::make('date')

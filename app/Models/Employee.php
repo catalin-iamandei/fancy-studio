@@ -5,9 +5,11 @@ namespace App\Models;
 use App\Models\Scopes\EmployeeScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Employee extends Model
 {
+    use SoftDeletes;
     protected $guarded = [];
 
     protected static function booted(): void

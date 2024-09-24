@@ -35,7 +35,7 @@ class ReceiptsRelationManager extends RelationManager
             ->filtersFormColumns(12)
             ->headerActions([
                 Tables\Actions\CreateAction::make()
-//                    ->disabled(fn() => !$this->ownerRecord->finishedWorkedToday())
+                    ->disabled(fn() => $this->ownerRecord->deleted_at)
 //                    ->label(fn() => !$this->ownerRecord->finishedWorkedToday() ? 'Add timesheet first!' : 'Add Receipt'),
             ])
             ->actions([

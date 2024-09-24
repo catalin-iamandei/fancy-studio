@@ -14,16 +14,15 @@ use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Actions\EditAction;
-use Filament\Tables\Actions\ViewAction;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Actions\CreateAction;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Forms\Components\RichEditor;
-use Filament\Tables\Filters\SelectFilter;
 use App\Filament\Resources\EmployeeResource\Pages;
 use HusamTariq\FilamentTimePicker\Forms\Components\TimePickerField;
 use Icetalker\FilamentStepper\Forms\Components\Stepper;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Webbingbrasil\FilamentCopyActions\Forms\Actions\CopyAction;
 
 class EmployeeResource extends Resource
@@ -41,6 +40,14 @@ class EmployeeResource extends Resource
 //        }
 //        return parent::getEloquentQuery();
 //    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->withoutGlobalScopes([
+                SoftDeletingScope::class,
+            ]);
+    }
 
     public static function form(Form $form): Form
     {
@@ -269,19 +276,22 @@ class EmployeeResource extends Resource
                 Tables\Filters\SelectFilter::make('location')
                     ->multiple()
                     ->preload()
-                    ->columnSpan(4)
+                    ->columnSpan(3)
                     ->relationship('location', 'name'),
                 Tables\Filters\SelectFilter::make('shift')
                     ->multiple()
                     ->preload()
-                    ->columnSpan(4)
+                    ->columnSpan(3)
                     ->relationship('shift', 'name'),
                 Tables\Filters\SelectFilter::make('writer')
                     ->multiple()
                     ->preload()
-                    ->columnSpan(4)
+                    ->columnSpan(3)
                     ->relationship('writer', 'name'),
-
+                Tables\Filters\TrashedFilter::make()
+                    ->columnSpan(3)
+                    ->label('Deleted')
+                ,
 //                SelectFilter::make('principal_site_id')
 //                    ->relationship('principal_site', 'name')
 //                    ->indicator('Principal Site')
@@ -311,7 +321,7 @@ class EmployeeResource extends Resource
                         $record->checkIn($data['checkin']);
                     })
                     ->hidden(function (array $data, $record) {
-                        return $record->isOnline();
+                        return $record->isOnline() || $record->deleted_at;
                     })
                     ->button()
                     ->color('success')
@@ -331,7 +341,7 @@ class EmployeeResource extends Resource
                         $record->checkOut($data['checkout']);
                     })
                     ->hidden(function (array $data, $record) {
-                        return !$record->isOnline();
+                        return !$record->isOnline() || $record->deleted_at;
                     })
                     ->button()
                     ->color('danger')
@@ -373,12 +383,12 @@ class EmployeeResource extends Resource
                         $record->newReceipt($data);
                     })
                     ->hidden(function (array $data, $record) {
-                        return $record->isOnline();
+                        return $record->isOnline() || $record->deleted_at;
                     })
                     ->button()
                     ->color('info')
                     ->modalWidth('4xl'),
-
+                Tables\Actions\RestoreAction::make()->color('info')->button(),
                 Tables\Actions\ActionGroup::make([
 //                    ViewAction::make(),
                     EditAction::make(),

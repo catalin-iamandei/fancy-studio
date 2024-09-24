@@ -66,7 +66,10 @@ class TimeTrackingRelationManager extends RelationManager
                         $this->ownerRecord->checkIn($data['checkin']);
                     })
                     ->hidden(function (array $data, $record) {
-                        return $this->ownerRecord->isOnline();
+                        return $this->ownerRecord->isOnline() ;
+                    })
+                    ->disabled(function (array $data, $record) {
+                        return $this->ownerRecord->deleted_at ;
                     })
                     ->button()
                     ->color('success')
@@ -87,6 +90,9 @@ class TimeTrackingRelationManager extends RelationManager
                     })
                     ->hidden(function (array $data, $record) {
                         return !$this?->ownerRecord?->isOnline();
+                    })
+                    ->disabled(function (array $data, $record) {
+                        return $this->ownerRecord->deleted_at ;
                     })
                     ->button()
                     ->color('danger')
