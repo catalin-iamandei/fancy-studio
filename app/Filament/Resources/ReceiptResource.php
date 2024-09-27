@@ -91,6 +91,7 @@ class ReceiptResource extends Resource
     {
         return [
             Tables\Columns\TextColumn::make('employee.name')
+                ->toggleable()
                 ->sortable()
                 ->searchable()
                 ->label('Model')
@@ -99,17 +100,21 @@ class ReceiptResource extends Resource
                 ->color('primary')
                 ->hidden($fromRelation),
             Tables\Columns\TextColumn::make('employee.location.name')
+                ->toggleable()
                 ->sortable()
                 ->searchable()
                 ->hidden($fromRelation),
             Tables\Columns\TextColumn::make('writer.name')
+                ->toggleable()
                 ->sortable()
                 ->searchable()
                 ->hidden($fromRelation),
-            Tables\Columns\TextColumn::make('date')->date('d.m.Y'),
+            Tables\Columns\TextColumn::make('date')->date('d.m.Y')->toggleable(),
             Tables\Columns\ViewColumn::make('sites')
+                ->toggleable()
                 ->view('filament.tables.columns.receipt_sites'),
             Tables\Columns\TextColumn::make('amount')
+                ->toggleable()
                 ->label('Total')
                 ->prefix('$')
                 ->summarize(Tables\Columns\Summarizers\Sum::make()
