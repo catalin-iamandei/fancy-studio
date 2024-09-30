@@ -224,9 +224,9 @@ class EmployeeResource extends Resource
                                 ->columns(12)
                                 ->columnSpan(12)
                         ]),
-                    Forms\Components\Tabs\Tab::make('Confidential')
+                    Forms\Components\Tabs\Tab::make('Intern email')
                         ->columns(12)
-                        ->visible(fn() => auth()->user()->hasRole('super_admin'))
+//                        ->visible(fn() => auth()->user()->hasRole('super_admin'))
                         ->schema([
                             Forms\Components\TextInput::make('intern_mail')
                                 ->prefixAction(CopyAction::make())
